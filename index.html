@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" charset="UTF-8">
+    <title>Pokedex</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+
+<!--Header con el logo (e imagenes)-->
+<header class="container-fluid text-bg-danger p-4 text-center">
+    <img src="resources/pokedex_logo.png" alt="logo de la pokedex" class="mx-auto d-block img-fluid">
+    <p class="m-0">Descubre a los pokemones de las diferentes regiones!<br>Y conviértete en un verdadero maestro pokemon</p>
+</header>
+
+<!--Linea divisoria blanca-->
+<div class="container-fluid bg-light"><p></p></div>
+
+<!--Modal  scroleable-->
+<div class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Platilla de botones pokemon-->
+<section id="plantilla-botones" class="container-fluid bg-dark p-4">
+    <nav aria-label="Paginacion pokemons" id="paginacion-top">
+        <ul class="pagination justify-content-center m-0">
+            <li class="page-item">
+                <a class="page-link bg-dark" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" aria-current="page"><span class="page-link bg-dark">1-12</span></li>
+            <li class="page-item">
+                <a class="page-link bg-dark" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+  
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 m-3">
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+        <div class="col d-grid">
+            <button class="col btn btn-outline-light p-3">Loading...</button>
+        </div>
+    </div>
+  
+    <nav aria-label="Paginacion pokemons" id="paginacion-bottom">
+        <ul class="pagination justify-content-center m-0 mt-4">
+            <li class="page-item">
+                <a class="page-link bg-dark" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" aria-current="page"><span class="page-link bg-dark">1-12</span></li>
+            <li class="page-item">
+                <a class="page-link bg-dark" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>
+
+<footer>
+
+</footer>
+
+<script src="main.js"></script>
+</body>
+
+</html>
