@@ -4,3 +4,103 @@
     width: 100px;
     height: 100px;
 }
+
+.stat-pokemon {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#estadisticas-pokemon .progress {
+    width: 10rem;
+    height: 7px;
+}
+
+#estadisticas-pokemon p {
+    margin:0;
+}
+
+/* TIPOS POKEMON */
+.tipo {
+    border: 1px solid;
+    border-radius: 1.5rem;
+    padding: 0.25rem 0;
+    width: 7rem;
+    color: white;
+}
+.unknown-type {
+    background-color: #68A090;
+    border-color: #44685E ;
+}
+.bug-type {
+    background-color: #A8B820;
+    border-color: #6D7815;
+}
+.dark-type {
+    background-color: #705848;
+    border-color: #49392F;
+}
+.dragon-type {
+    background-color: #7038F8;
+    border-color: #4924A1;
+}
+.electric-type {
+    background-color: #F8D030;
+    border-color: #A1871F;
+}
+.fairy-type {
+    background-color: #EE99AC;
+    border-color: #9B6470;
+}
+.fighting-type {
+    background-color: #C03028;
+    border-color: #7D1F1A;
+}
+.fire-type {
+    background-color: #F08030;
+    border-color: #9C531F;
+}
+.flying-type {
+    background-color: #A890F0;
+    border-color: #6D5E9C;
+}
+.ghost-type {
+    background-color: #705898;
+    border-color: #493963;
+}
+.grass-type {
+    background-color: #78C850;
+    border-color: #4E8234;
+}
+.ground-type {
+    background-color: #E0C068;
+    border-color: #927D44;
+}
+.ice-type {
+    background-color: #98D8D8;
+    border-color: #638D8D;
+}
+.normal-type {
+    background-color: #A8A878;
+    border-color: #6D6D4E;
+}
+.poison-type {
+    background-color: #A040A0;
+    border-color: #682A68;
+}
+.psychic-type {
+    background-color: #F85888;
+    border-color: #A13959;
+}
+.rock-type {
+    background-color: #B8A038;
+    border-color: #786824;
+}
+.steel-type {
+    background-color: #B8B8D0;
+    border-color: #787887;
+}
+.water-type {
+    background-color: #6890F0;
+    border-color: #445E9C;
+}
