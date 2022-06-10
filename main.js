@@ -3,18 +3,27 @@ const $modalInfoPokemon = document.querySelector("#modal-info-pokemon");
 const modalElement = new bootstrap.Modal($modalInfoPokemon);
 
 const MAX_BASE_STAT = 255;
-
-$botonesPokemon.onclick = function(event){
-    const $elemento = event.target
-    if($elemento.classList.contains("btn")){
-        modalElement.show();
-    }
-}
+const CANT_POKEMONES_A_PEDIR = 12;
+let paginaAnterior = null;
+let paginaActual = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=12";
+let paginaSiguiente = null;
 
 /*Funciones GENERALISIMAS*/
 
 function capitalizarPrimerLetra(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function descapitalizarPrimeraLetra(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
+function formatearATitular(string) {
+    return capitalizarPrimerLetra(string.replaceAll("-", " "));
+}
+
+function desformatearTitular(string) {
+    return descapitalizarPrimeraLetra(string.replaceAll(" ", "-"));
 }
 
 function convertirDmAMts(decimetros) {
@@ -43,8 +52,55 @@ function agregarTipoPokemon($elementoPadre, tipo) {
     $elementoPadre.appendChild($span);
 }
 
+/*Funciones de la interfaz principal*/
+
+function configurarPaginacion() {
+    const $paginaciones = document.querySelectorAll(".pagination");
+    $paginaciones.forEach($paginacion => {
+        if(paginaAnterior){
+            $paginacion.querySelector(".anterior").classList.remove("disabled");
+        }else{
+            $paginacion.querySelector(".anterior").classList.add("disabled");
+        }
+        if(paginaSiguiente){
+            $paginacion.querySelector(".siguiente").classList.remove("disabled");
+        }else{
+            $paginacion.querySelector(".siguiente").classList.add("disabled");
+        }
+    })
+}
+
+function cargarPaginaAnterior() {
+    paginaActual = paginaAnterior;
+    cargarPaginaActual();
+}
+
+function cargarPaginaSiguiente() {
+    paginaActual = paginaSiguiente;
+    cargarPaginaActual();
+}
 
 /*Funciones del MODAL*/
+
+function configurarInfoModal(pokemon) {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
+        .then(response => response.json())
+        .then(response => {
+            cambiarTituloModal(formatearATitular(response["name"]), response["id"]);
+            cambiarImgModal(response["sprites"]["other"]["official-artwork"]["front_default"]);
+            const tiposPokemon = [];
+            response["types"].forEach(type => {
+                tiposPokemon.push(type["type"]["name"]);
+            })
+            agregarTiposModal(tiposPokemon);
+            cambiarPesoModal(String(convertirHgAKgs(response["weight"])));
+            cambiarAlturaModal(String(convertirDmAMts(response["height"])));
+            response["stats"].forEach(stat => {
+                cambiarStatsModal(stat["stat"]["name"], stat["base_stat"]);
+            })
+        })
+        .catch(error => {console.log("Se falló fuerte :c", error)});
+}
 
 function cambiarTituloModal(nombrePokemon, numPokemon) {
     //Recibe string y number
@@ -87,6 +143,42 @@ function cambiarStatsModal(stat, valor) {
     $stat.querySelector(".progress-bar").style.width = `${valor/MAX_BASE_STAT * 100}%`;
 }
 
+/*Funciones para trabajar con la API de Pokemon*/
+
+function cargarPaginaActual() {
+    fetch(paginaActual)
+        .then(response => response.json())
+        .then(response => {
+            paginaAnterior = response["previous"];
+            paginaSiguiente = response["next"];
+            configurarPaginacion();
+            const arrayBotones = $botonesPokemon.querySelectorAll("button");
+            response["results"].forEach((pokemon, index) => {
+                arrayBotones[index].textContent = formatearATitular(pokemon["name"]);
+            })
+        })
+        .catch(error => {console.log("Uups", error)});
+}
+
+/*Asignacion de eventos a los botones*/
+
+function asignarEventosPaginacion() {
+    const $paginaciones = document.querySelectorAll(".pagination");
+    $paginaciones.forEach($paginacion => {
+        $paginacion.querySelector(".anterior button").onclick = cargarPaginaAnterior;
+        $paginacion.querySelector(".siguiente button").onclick = cargarPaginaSiguiente;
+    })
+}
+
+$botonesPokemon.onclick = function(event){
+    const $elemento = event.target
+    if($elemento.classList.contains("btn")){
+        displayPlaceholderModalPokemon();
+        configurarInfoModal(desformatearTitular($elemento.textContent));
+        modalElement.show();
+    }
+}
+
 function displayPlaceholderPokemones() {
     $botonesPokemon.querySelectorAll("button").forEach(boton => {
         boton.textContent = "Cargando...";
@@ -94,15 +186,19 @@ function displayPlaceholderPokemones() {
 }
 
 function displayPlaceholderModalPokemon() {
-    cambiarTituloModal("Ditto", 0);
-    cambiarImgModal("resources/ditto-1.png");
-    agregarTiposModal(["normal"]);
-    cambiarPesoModal("12.7");
-    cambiarAlturaModal("0.4");
+    cambiarTituloModal("Unknown", 0);
+    cambiarImgModal("");
+    agregarTiposModal(["unknown"]);
+    cambiarPesoModal("---");
+    cambiarAlturaModal("---");
     const stats = ["hp", "attack", "defense", "special-attack", "special-defense", "speed"];
-    stats.forEach(stat => {cambiarStatsModal(stat, 55)});
+    stats.forEach(stat => {cambiarStatsModal(stat, 0)});
 }
 
 displayPlaceholderPokemones();
 
 displayPlaceholderModalPokemon();
+
+cargarPaginaActual();
+
+asignarEventosPaginacion();
