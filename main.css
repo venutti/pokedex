@@ -1,8 +1,8 @@
 .modal img{
     display: block;
     margin: 0 auto 1rem auto;
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
 }
 
 .stat-pokemon {
@@ -18,6 +18,10 @@
 
 #estadisticas-pokemon p {
     margin:0;
+}
+
+#estadisticas-pokemon .progress-bar {
+    transition: width 0.5s;
 }
 
 /* TIPOS POKEMON */

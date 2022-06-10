@@ -95,7 +95,7 @@ function displayPlaceholderPokemones() {
 
 function displayPlaceholderModalPokemon() {
     cambiarTituloModal("Ditto", 0);
-    cambiarImgModal("resources/ditto.png");
+    cambiarImgModal("resources/ditto-1.png");
     agregarTiposModal(["normal"]);
     cambiarPesoModal("12.7");
     cambiarAlturaModal("0.4");
