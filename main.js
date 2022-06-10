@@ -3,7 +3,8 @@ const $modalInfoPokemon = document.querySelector("#modal-info-pokemon");
 const modalElement = new bootstrap.Modal($modalInfoPokemon);
 
 const MAX_BASE_STAT = 255;
-const CANT_POKEMONES_A_PEDIR = 12;
+let offset = 0;
+let limit = 12;
 let paginaAnterior = null;
 let paginaActual = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=12";
 let paginaSiguiente = null;
@@ -70,14 +71,38 @@ function configurarPaginacion() {
     })
 }
 
+function cargarPaginaActual() {
+    fetch(paginaActual)
+        .then(response => response.json())
+        .then(response => {
+            modificarIndicePagina();
+            paginaAnterior = response["previous"];
+            paginaSiguiente = response["next"];
+            configurarPaginacion();
+            const arrayBotones = $botonesPokemon.querySelectorAll("button");
+            response["results"].forEach((pokemon, index) => {
+                arrayBotones[index].textContent = formatearATitular(pokemon["name"]);
+            })
+        })
+        .catch(error => {console.log("Uups", error)});
+}
+
 function cargarPaginaAnterior() {
     paginaActual = paginaAnterior;
+    offset -= limit;
     cargarPaginaActual();
 }
 
 function cargarPaginaSiguiente() {
     paginaActual = paginaSiguiente;
+    offset += limit;
     cargarPaginaActual();
+}
+
+function modificarIndicePagina() {
+    document.querySelectorAll(".pagination .marcador-pagina span").forEach(marcador => {
+        marcador.textContent = `${offset+1}-${offset+limit}`;
+    })
 }
 
 /*Funciones del MODAL*/
@@ -145,20 +170,6 @@ function cambiarStatsModal(stat, valor) {
 
 /*Funciones para trabajar con la API de Pokemon*/
 
-function cargarPaginaActual() {
-    fetch(paginaActual)
-        .then(response => response.json())
-        .then(response => {
-            paginaAnterior = response["previous"];
-            paginaSiguiente = response["next"];
-            configurarPaginacion();
-            const arrayBotones = $botonesPokemon.querySelectorAll("button");
-            response["results"].forEach((pokemon, index) => {
-                arrayBotones[index].textContent = formatearATitular(pokemon["name"]);
-            })
-        })
-        .catch(error => {console.log("Uups", error)});
-}
 
 /*Asignacion de eventos a los botones*/
 
