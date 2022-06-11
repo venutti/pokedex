@@ -168,9 +168,6 @@ function cambiarStatsModal(stat, valor) {
     $stat.querySelector(".progress-bar").style.width = `${valor/MAX_BASE_STAT * 100}%`;
 }
 
-/*Funciones para trabajar con la API de Pokemon*/
-
-
 /*Asignacion de eventos a los botones*/
 
 function asignarEventosPaginacion() {
@@ -206,6 +203,21 @@ function displayPlaceholderModalPokemon() {
     stats.forEach(stat => {cambiarStatsModal(stat, 0)});
 }
 
+/*Para ocultar el modal yendo para "atras" en el navegador*/
+
+if (window.history && window.history.pushState) {
+    $modalInfoPokemon.addEventListener('show.bs.modal', function(e) {
+        window.history.pushState('forward', null, './#modal');
+    })
+
+    document.defaultView.addEventListener('popstate', function(e) {
+        modalElement.hide();
+    })
+
+    $modalInfoPokemon.addEventListener('hide.bs.modal', function(e) {
+        window.history.back();
+    })
+} 
 displayPlaceholderPokemones();
 
 displayPlaceholderModalPokemon();
