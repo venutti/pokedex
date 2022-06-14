@@ -1,22 +1,26 @@
+/* eslint-disable import/extensions */
 import {
   removerHijos,
   agregarTipoPokemon,
-} from './utilidades';
+  formatearATitular,
+  convertirHgAKgs,
+  convertirDmAMts,
+} from './utilidades.js';
 
 const $modalInfoPokemon = document.querySelector('#modal-info-pokemon');
 const MAX_BASE_STAT = 255;
 
-export function cambiarTituloModal($modal, nuevoTitulo) {
+function cambiarTituloModal(nuevoTitulo) {
   // Recibe string y number
-  $modal.querySelector('.modal-title').textContent = nuevoTitulo;
+  $modalInfoPokemon.querySelector('.modal-title').textContent = nuevoTitulo;
 }
 
-export function cambiarImgModal(rutaImg) {
+function cambiarImgModal(rutaImg) {
   // Recibe string
   $modalInfoPokemon.querySelector('.modal-body img').src = rutaImg;
 }
 
-export function agregarTiposModal(arrayTipos = ['undefined']) {
+function agregarTiposModal(arrayTipos = ['undefined']) {
   // Recibe array de strings
   const $tiposPokemon = $modalInfoPokemon.querySelector('.modal-body #tipo-pokemon');
   removerHijos($tiposPokemon);
@@ -25,22 +29,48 @@ export function agregarTiposModal(arrayTipos = ['undefined']) {
   });
 }
 
-export function cambiarPesoModal(peso) {
+function cambiarPesoModal(peso) {
   // Recibe string
   $modalInfoPokemon.querySelector('.modal-body #peso-pokemon').textContent = `${peso}kg`;
 }
 
-export function cambiarAlturaModal(altura) {
+function cambiarAlturaModal(altura) {
   // Recibe string
   $modalInfoPokemon.querySelector('.modal-body #altura-pokemon').textContent = `${altura}mts`;
 }
 
-export function cambiarStatsModal(stat, valor) {
+function cambiarStatsModal(stat, valor) {
   // Recibe string y number
   const $stat = $modalInfoPokemon.querySelector(`.modal-body #${stat}`);
   $stat.querySelector('.progress-bar').style.width = `${(valor / MAX_BASE_STAT) * 100}%`;
 }
 
+export function configurarModalPokemon(datosPokemon) {
+  /* Recibe los datos de un pokemon en formato JSON (como lo descrito en la API de pokemon)
+  Y en base a eso, modifica la informacion del MODAL con los datos del pokemon */
+  cambiarTituloModal(`${formatearATitular(datosPokemon.name)} N°${String(datosPokemon.id).padStart(3, '0')}`);
+  cambiarImgModal(datosPokemon.sprites.other['official-artwork'].front_default);
+  const tiposPokemon = [];
+  datosPokemon.types.forEach((type) => {
+    tiposPokemon.push(type.type.name);
+  });
+  agregarTiposModal(tiposPokemon);
+  cambiarPesoModal(String(convertirHgAKgs(datosPokemon.weight)));
+  cambiarAlturaModal(String(convertirDmAMts(datosPokemon.height)));
+  datosPokemon.stats.forEach((stat) => {
+    cambiarStatsModal(stat.stat.name, stat.base_stat);
+  });
+}
+
+export function configurarPlaceholderModalPokemon() {
+  cambiarTituloModal('Unknown', 0);
+  cambiarImgModal('');
+  agregarTiposModal(['unknown']);
+  cambiarPesoModal('---');
+  cambiarAlturaModal('---');
+  const stats = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
+  stats.forEach((stat) => { cambiarStatsModal(stat, 0); });
+}
 /*
 export async function configurarInfoModal(pokemon) {
   const pokemon = await obtenerPokemon(pokemon);
